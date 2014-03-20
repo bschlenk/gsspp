@@ -121,14 +121,18 @@ void GSSBuffer::resize( size_t len )
 	swap( tmp );
 }
 
-GSSBuffer& GSSBuffer::operator += ( const GSSBuffer& other )
+GSSBuffer& GSSBuffer::operator+ ( const GSSBuffer& other )
 {
 	GSSBuffer tmp( *this );
 	tmp.resize( tmp.size() + other.size() );
-	
 	memcpy( (char *)tmp._buff.value + size(), other._buff.value, other.size() );
-	swap( tmp );
+	return tmp;
+}
 
+GSSBuffer& GSSBuffer::operator+= ( const GSSBuffer& other )
+{
+	GSSBuffer tmp( *this + other );
+	swap( tmp );
 	return *this;
 }
 

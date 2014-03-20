@@ -65,7 +65,21 @@ class GSSBuffer
 	operator       gss_buffer_desc_struct *()       { return &_buff; }
 	operator void *() { return _buff.value; }
 
+	GSSBuffer& operator +  ( const GSSBuffer& other );
+
+	template <typename T>
+	GSSBuffer& operator +  ( const T& other ) { return *this + GSSBuffer( (void *)&other, sizeof( T ) ); } 
+
+	template <typename T>
+	GSSBuffer& operator +  ( const T* other ) { return *this + GSSBuffer( (void *)other, sizeof( T ) ); }
+
 	GSSBuffer& operator += ( const GSSBuffer& other );
+
+	template <typename T>
+	GSSBuffer& operator += ( const T& other ) { return *this += GSSBuffer( (void *)&other, sizeof( T ) ); }
+
+	template <typename T>
+	GSSBuffer& operator += ( const T* other ) { return *this += GSSBuffer( (void *)other, sizeof( T ) ); }
 
 	template <typename T>
 	T get() { assert( sizeof( T ) <= _buff.length ); return *(T *)_buff.value; }
