@@ -73,6 +73,33 @@ GSSBuffer GSSContext::export_context()
 	return exported;
 }
 
+GSSBuffer GSSContext::get_mic( const GSSBuffer& message, gss_qop_t qop = GSS_C_QOP_DEFAULT ) const
+{
+	OM_uint32 maj, min;
+	GSSBuffer mic;
+
+	maj = gss_get_mic( &min, &_context, qop, message, mic );
+
+	if ( maj != GSS_S_COMPLETE )
+	{
+		throw GSSException( maj, min, "gss_get_mic" );
+	}
+
+	return mic;
+}
+
+bool GSSContext::verify_mic( const GSSBuffer& message, const GSSBuffer& mic )
+{
+	OM_uint32 maj, min;
+	maj = gss_verify_mic( &min, &_context, message, mic, 0 );
+
+	if ( maj == GSS_S_COMPLETE )
+		return true;
+	if ( maj == GSS_S_BAD_SIG )
+		return false;
+	throw GSSException( maj, min, "gss_verify_mic" );
+}
+
 GSSBuffer GSSContext::wrap( const GSSBuffer& message, bool encrypt, gss_qop_t qop ) const
 { 
 	return wrap( *this, message, encrypt, qop );
