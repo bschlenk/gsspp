@@ -7,8 +7,10 @@
 #include <gssapi.h>
 
 
-#include <iostream>
-
+GSSContext( const GSSBuffer& buff )
+{
+	import_context( buff );
+}
 
 void GSSContext::clear()
 {

@@ -14,6 +14,7 @@ class GSSContext
  public:
 	// constructors
 	GSSContext() : _context( GSS_C_NO_CONTEXT ) {}
+	GSSContext( const GSSBuffer& buff );
 
 	// assignment operators
 	GSSContext& operator= ( const GSSContext& other );
