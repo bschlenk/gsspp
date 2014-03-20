@@ -21,10 +21,10 @@ class GSSBuffer
 	GSSBuffer( std::istream& is, size_t len );
 
 	// assignment operators
-	GSSBuffer& operator= ( const GSSBuffer& other )       { assign( other ); }
-	GSSBuffer& operator= ( const gss_buffer_desc& other ) { assign( other ); }
-	GSSBuffer& operator= ( const char * other )           { assign( other ); }
-	GSSBuffer& operator= ( const std::string& other )     { assign( other ); }
+	GSSBuffer& operator= ( const GSSBuffer& other )       { assign( other ); return *this; }
+	GSSBuffer& operator= ( const gss_buffer_desc& other ) { assign( other ); return *this; }
+	GSSBuffer& operator= ( const char * other )           { assign( other ); return *this; }
+	GSSBuffer& operator= ( const std::string& other )     { assign( other ); return *this; }
 
 	~GSSBuffer() { clear(); }
 	
