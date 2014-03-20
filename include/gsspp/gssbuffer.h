@@ -30,11 +30,18 @@ class GSSBuffer
 	
 	void assign( const GSSBuffer& );
 	void assign( const gss_buffer_desc& );
-	void assign( size_t len );
 	void assign( const char * );
 	void assign( void *, size_t len );
 	void assign( const std::string& );
 	void assign( std::istream& is, size_t len );
+
+	/* Not sure if these are a good idea...
+	template <typename T>
+	void assign( T val ) { GSSBuffer tmp( (void *)&val, sizeof( T ) ); swap( tmp ); }
+
+	template <typename T>
+	void assign( T* val ) { GSSBuffer tmp( (void *)val, sizeof( T ) ); swap( tmp ); }
+	*/
 
 	void swap( GSSBuffer& other );
 	void swap( gss_buffer_desc& other );
@@ -42,6 +49,8 @@ class GSSBuffer
 	void   clear();
 	size_t size()  const { return _buff.length; }
 	bool   empty() const { return !size(); }
+
+	void resize( size_t len );
 
 	std::string    str() const { return std::string( (char *)_buff.value, _buff.length ); }
 	const char * bytes() const { return (char *)_buff.value; }
@@ -55,6 +64,8 @@ class GSSBuffer
 	operator const gss_buffer_desc_struct *() const { return &_buff; }
 	operator       gss_buffer_desc_struct *()       { return &_buff; }
 	operator void *() { return _buff.value; }
+
+	GSSBuffer& operator += ( const GSSBuffer& other );
 
 	template <typename T>
 	T get() { assert( sizeof( T ) <= _buff.length ); return *(T *)_buff.value; }

@@ -71,12 +71,6 @@ void GSSBuffer::assign( const gss_buffer_desc& buff )
 	swap( tmp );
 }
 
-void GSSBuffer::assign( size_t len )
-{
-	GSSBuffer tmp( len );
-	swap( tmp );
-}
-
 void GSSBuffer::assign( const char * s )
 {
 	GSSBuffer tmp( s );
@@ -101,6 +95,7 @@ void GSSBuffer::assign( istream& is, size_t len )
 	swap( tmp );
 }
 
+
 void GSSBuffer::swap( GSSBuffer& other )
 {
 	std::swap( _buff, other._buff );
@@ -116,6 +111,25 @@ void GSSBuffer::clear()
 	OM_uint32 x;
 	// this function checks if the buffer is null
 	gss_release_buffer( &x, &_buff );
+}
+
+void GSSBuffer::resize( size_t len )
+{
+	GSSBuffer tmp( len );
+	memcpy( tmp._buff.value, _buff.value, std::min( len, _buff.length ) );
+	
+	swap( tmp );
+}
+
+GSSBuffer& GSSBuffer::operator += ( const GSSBuffer& other )
+{
+	GSSBuffer tmp( *this );
+	tmp.resize( tmp.size() + other.size() );
+	
+	memcpy( (char *)tmp._buff.value + size(), other._buff.value, other.size() );
+	swap( tmp );
+
+	return *this;
 }
 
 bool operator ==( const GSSBuffer& a,       const GSSBuffer& b       ) { return ( a.size() == b.size() && !memcmp( a.bytes(), b.bytes(), a.size() ) ); }
