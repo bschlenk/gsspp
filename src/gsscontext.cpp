@@ -73,12 +73,12 @@ GSSBuffer GSSContext::export_context()
 	return exported;
 }
 
-GSSBuffer GSSContext::get_mic( const GSSBuffer& message, gss_qop_t qop = GSS_C_QOP_DEFAULT ) const
+GSSBuffer GSSContext::get_mic( const GSSBuffer& message, gss_qop_t qop ) const
 {
 	OM_uint32 maj, min;
 	GSSBuffer mic;
 
-	maj = gss_get_mic( &min, &_context, qop, message, mic );
+	maj = gss_get_mic( &min, _context, qop, const_cast<GSSBuffer&>( message ), mic );
 
 	if ( maj != GSS_S_COMPLETE )
 	{
@@ -91,7 +91,7 @@ GSSBuffer GSSContext::get_mic( const GSSBuffer& message, gss_qop_t qop = GSS_C_Q
 bool GSSContext::verify_mic( const GSSBuffer& message, const GSSBuffer& mic )
 {
 	OM_uint32 maj, min;
-	maj = gss_verify_mic( &min, &_context, message, mic, 0 );
+	maj = gss_verify_mic( &min, _context, const_cast<GSSBuffer&>( message ), const_cast<GSSBuffer&>( mic ), 0 );
 
 	if ( maj == GSS_S_COMPLETE )
 		return true;
