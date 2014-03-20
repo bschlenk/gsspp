@@ -7,7 +7,7 @@
 #include <gssapi.h>
 
 
-GSSContext( const GSSBuffer& buff )
+GSSContext::GSSContext( const GSSBuffer& buff )
 {
 	import_context( buff );
 }

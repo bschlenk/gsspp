@@ -1,5 +1,6 @@
 AC_INIT([gsspp], [1.0], [bschlenk@umich.edu])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
+m4_pattern_allow([AM_PROG_AR])
 AM_PROG_AR
 LT_INIT
 AC_CONFIG_MACRO_DIR([m4])
