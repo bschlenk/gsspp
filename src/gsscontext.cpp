@@ -18,14 +18,14 @@ void GSSContext::clear()
 	gss_delete_sec_context( &x, &_context, GSS_C_NO_BUFFER );
 }
 
-bool GSSContext::initialize( GSSBuffer& input, const GSSName& target, const Flags& flags, GSSCredential cred, GSSMech mech, OM_uint32 time, gss_channel_bindings_t bindings )
+bool GSSContext::initialize( GSSBuffer& input, const GSSName& target, const Flags& flags, const GSSCredential& cred, GSSMech mech, OM_uint32 time, gss_channel_bindings_t bindings )
 {
 	GSSBuffer recv_tok, send_tok;
 	OM_uint32 maj_stat, min_stat, ret_flags;
 
 	maj_stat = gss_init_sec_context(
 			&min_stat,
-			cred,
+			const_cast<GSSCredential&>( cred ),
 			&_context,
 			target,
 			mech,
@@ -44,6 +44,33 @@ bool GSSContext::initialize( GSSBuffer& input, const GSSName& target, const Flag
 	}
 
 	input.swap( send_tok );
+
+	return maj_stat == GSS_S_CONTINUE_NEEDED;
+}
+
+bool GSSContext::accept( GSSBuffer& input, const GSSCredential& cred, gss_channel_bindings_t bindings )
+{
+	GSSBuffer output;
+	OM_uint32 maj_stat, min_stat, ret_flags;
+	
+	maj_stat = gss_accept_sec_context(
+			&min_stat,
+			&_context,
+			const_cast<GSSCredential&>( cred ),
+			input,
+			bindings,
+			0,        // gss_name_t* - name of initiating principle
+			0,        // gss_OID*    - security mechanism used
+			output,
+			0,        // OM_uint32*  - ret_flags
+			0,        // OM_uint32*  - time_req
+			0         // gss_cred_id_t* - delegated_cred_handle - only valid if ret_flags contains GSS_C_DELEG_FLAG
+	);
+
+	if ( !valid() || ( maj_stat != GSS_S_COMPLETE && maj_stat != GSS_S_CONTINUE_NEEDED ) )
+		throw GSSException( maj_stat, min_stat, "gss_accept_sec_context" );
+
+	input.swap( output );
 
 	return maj_stat == GSS_S_CONTINUE_NEEDED;
 }

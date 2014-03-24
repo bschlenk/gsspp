@@ -68,9 +68,15 @@ class GSSContext
 		GSSBuffer& input,
 		const GSSName& target,
 		const Flags& flags,
-		GSSCredential cred = GSS_C_NO_CREDENTIAL,
+		const GSSCredential& cred = GSS_C_NO_CREDENTIAL,
 		GSSMech mech = GSS_C_NO_OID,
 		OM_uint32 time = 0,
+		gss_channel_bindings_t bindings = GSS_C_NO_CHANNEL_BINDINGS
+	);
+
+	bool accept(
+		GSSBuffer& input,
+		const GSSCredential& cred = GSS_C_NO_CREDENTIAL,
 		gss_channel_bindings_t bindings = GSS_C_NO_CHANNEL_BINDINGS
 	);
 
