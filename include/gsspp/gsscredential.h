@@ -4,19 +4,29 @@
 
 #include <gssapi.h>
 
+class GSSName;
+
 class GSSCredential
 {
  public:
 	GSSCredential() : _credential( GSS_C_NO_CREDENTIAL ) {}
-	GSSCredential( const GSSCredential& );
-	GSSCredential( gss_cred_id_t_desc_struct * cred ) : _credential( cred ) {}
+	GSSCredential( gss_cred_id_t cred ) : _credential( cred ) {}
+	GSSCredential( const GSSName& name );
+
+	~GSSCredential() { clear(); }
+
+	void clear();
 	
 	
 	operator gss_cred_id_t  () { return _credential;  }
 	operator gss_cred_id_t *() { return &_credential; }
 	
  private:
-	gss_cred_id_t_desc_struct * _credential;
+	// no copy function for credential
+	GSSCredential( const GSSCredential& );
+	GSSCredential& operator = ( const GSSCredential& );
+
+	gss_cred_id_t _credential;
 };
 
 #endif // __GSSCREDENTIAL_H__
