@@ -126,7 +126,8 @@ GSSBuffer& GSSBuffer::operator+ ( const GSSBuffer& other )
 	GSSBuffer tmp( *this );
 	tmp.resize( tmp.size() + other.size() );
 	memcpy( (char *)tmp._buff.value + size(), other._buff.value, other.size() );
-	return tmp;
+	swap( tmp );
+	return *this;
 }
 
 GSSBuffer& GSSBuffer::operator+= ( const GSSBuffer& other )
