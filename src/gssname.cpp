@@ -4,13 +4,15 @@
 #include <gssapi.h>
 #include <algorithm>
 
-gss_OID_desc * GSSName::_oid_types[] = {
+const gss_OID GSSName::_oid_types[] = {
 	GSS_C_NO_OID,
 	GSS_C_NT_USER_NAME,
+	GSS_C_NT_MACHINE_UID_NAME,
+	GSS_C_NT_STRING_UID_NAME,
+	// GSS_C_NT_HOSTBASED_SERVICE_X, // deprecated, use GSS_C_NT_HOSTBASED_SERVICE
 	GSS_C_NT_HOSTBASED_SERVICE,
-	GSS_C_NT_HOSTBASED_SERVICE_X,
-	GSS_C_NT_EXPORT_NAME,
-	GSS_C_NT_ANONYMOUS
+	GSS_C_NT_ANONYMOUS,
+	GSS_C_NT_EXPORT_NAME
 };
 	
 

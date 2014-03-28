@@ -13,10 +13,12 @@ class GSSName
 	enum NameType {
 		NO_OID,
 		USER_NAME,
+		MACHINE_UID_NAME,
+		STRING_UID_NAME,
+		// HOSTBASED_SERVICE_X, // deprecated, use HOSTBASED_SERVICE
 		HOSTBASED_SERVICE,
-		HOSTBASED_SERVICE_X,
-		EXPORT_NAME,
 		ANONYMOUS,
+		EXPORT_NAME,
 	};
 
 	// constructors
@@ -56,7 +58,7 @@ class GSSName
  private:
 	gss_name_t _name;
 
-	static gss_OID_desc * _oid_types[];
+	static const gss_OID _oid_types[];
 };
 
 
