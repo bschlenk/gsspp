@@ -84,7 +84,7 @@ class GSSContext
 	GSSBuffer export_context();
 
 	GSSBuffer get_mic( const GSSBuffer& message, gss_qop_t qop = GSS_C_QOP_DEFAULT ) const;
-	bool verify_mic( const GSSBuffer& message, const GSSBuffer& mic ) const;
+	bool verify_mic( const GSSBuffer& message, const GSSBuffer& mic, gss_qop_t * qop_state = 0 ) const;
 
 	GSSBuffer wrap    ( const GSSBuffer& message, bool encrypt, gss_qop_t qop = GSS_C_QOP_DEFAULT ) const;
 	void wrap_in_place( GSSBuffer& message,       bool encrypt, gss_qop_t qop = GSS_C_QOP_DEFAULT ) const;

@@ -115,10 +115,10 @@ GSSBuffer GSSContext::get_mic( const GSSBuffer& message, gss_qop_t qop ) const
 	return mic;
 }
 
-bool GSSContext::verify_mic( const GSSBuffer& message, const GSSBuffer& mic ) const
+bool GSSContext::verify_mic( const GSSBuffer& message, const GSSBuffer& mic, gss_qop_t * qop_state ) const
 {
 	OM_uint32 maj, min;
-	maj = gss_verify_mic( &min, _context, const_cast<GSSBuffer&>( message ), const_cast<GSSBuffer&>( mic ), 0 );
+	maj = gss_verify_mic( &min, _context, const_cast<GSSBuffer&>( message ), const_cast<GSSBuffer&>( mic ), qop_state );
 
 	if ( maj == GSS_S_COMPLETE )
 		return true;
