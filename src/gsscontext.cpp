@@ -14,8 +14,8 @@ GSSContext::GSSContext( const GSSBuffer& buff )
 
 void GSSContext::clear()
 {
-	OM_uint32 x;
-	gss_delete_sec_context( &x, &_context, GSS_C_NO_BUFFER );
+	OM_uint32 min;
+	gss_delete_sec_context( &min, &_context, GSS_C_NO_BUFFER );
 }
 
 bool GSSContext::initialize( GSSBuffer& input, const GSSName& target, const Flags& flags, const GSSCredential& cred, GSSMech mech, OM_uint32 time, gss_channel_bindings_t bindings )
