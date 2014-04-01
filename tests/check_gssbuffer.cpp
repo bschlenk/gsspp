@@ -1,13 +1,12 @@
 #include "gsspp/gssbuffer.h"
-#include <check.h>
-#include <cassert>
 #include <string>
-#include <cstring>
 #include <sstream>
+#include <cstring>
 #include <iostream>
+#include <cassert>
 using namespace std;
 
-START_TEST( test_gssbuffer )
+int main()
 {
 	GSSBuffer buff;
 	assert( buff.size() == 0 );
@@ -33,5 +32,5 @@ START_TEST( test_gssbuffer )
 	assert( ssBuff == testStr.substr( 0, testStr.size() / 2 ) );
 
 	cout << ssBuff << endl;
+	return 0;
 }
-END_TEST
