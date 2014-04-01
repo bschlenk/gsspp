@@ -3,8 +3,10 @@
 
 #include <gssapi.h>
 #include <string>
+#include <iosfwd>
 
 class GSSBuffer;
+class GSSMech;
 
 class GSSName
 {
@@ -19,6 +21,7 @@ class GSSName
 		HOSTBASED_SERVICE,
 		ANONYMOUS,
 		EXPORT_NAME,
+		// KRB5_PRINCIPAL_NAME,
 	};
 
 	// constructors
@@ -52,14 +55,29 @@ class GSSName
 	operator const gss_name_t  () const { return _name;  }
 
 	void clear();
-	bool empty() { return _name == GSS_C_NO_NAME; }
-	bool valid() { return !empty(); }
+	bool empty() const { return _name == GSS_C_NO_NAME; }
+	bool valid() const { return !empty(); }
+
+	std::string str( NameType * nt = 0 ) const;
+	GSSName canonicalize( const GSSMech& mech ) const;
+	GSSBuffer export_name( const GSSMech& mech ) const;
+	void import_name( const GSSBuffer& buff, NameType nt );
+
+	bool operator== ( const GSSName& name    ) const;
+	bool operator== ( const std::string& str ) const;
+	bool operator!= ( const GSSName& name    ) const;
+	bool operator!= ( const std::string& str ) const;
 
  private:
 	gss_name_t _name;
 
 	static const gss_OID _oid_types[];
 };
+
+bool operator== ( const std::string& str, const GSSName& name );
+bool operator!= ( const std::string& str, const GSSName& name );
+
+std::ostream& operator<< ( std::ostream& os, const GSSName& name );
 
 
 #endif // __GSSNAME_H__
