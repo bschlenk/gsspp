@@ -157,33 +157,35 @@ void GSSContext::wrap_in_place( const GSSContext& context, GSSBuffer& message, b
 	message.swap( tmp );
 }
 
-GSSBuffer GSSContext::unwrap( const GSSBuffer& wrapped ) const
+GSSBuffer GSSContext::unwrap( const GSSBuffer& wrapped, bool * conf_state, gss_qop_t * qop_state ) const
 {
-	return unwrap( *this, wrapped );
+	return unwrap( *this, wrapped, conf_state, qop_state );
 }
 
-GSSBuffer GSSContext::unwrap( const GSSContext& context, const GSSBuffer& message )
+GSSBuffer GSSContext::unwrap( const GSSContext& context, const GSSBuffer& message, bool * conf_state, gss_qop_t * qop_state )
 {
 	OM_uint32 maj, min;
+	int iconf_state;
 	GSSBuffer unwrapped;
-	maj = gss_unwrap( &min, context, const_cast<GSSBuffer&>( message ), unwrapped, 0, 0 );
+	maj = gss_unwrap( &min, context, const_cast<GSSBuffer&>( message ), unwrapped, &iconf_state, qop_state );
 
 	if ( maj != GSS_S_COMPLETE )
-	{
 		throw GSSException( maj, min, "gss_unwrap" );
-	}
+
+	if ( conf_state )
+		*conf_state = iconf_state;
 
 	return unwrapped;
 }
 	
-void GSSContext::unwrap_in_place( GSSBuffer& wrapped ) const
+void GSSContext::unwrap_in_place( GSSBuffer& wrapped, bool * conf_state, gss_qop_t * qop_state ) const
 {
-	unwrap_in_place( *this, wrapped );
+	unwrap_in_place( *this, wrapped, conf_state, qop_state );
 }
 
-void GSSContext::unwrap_in_place( const GSSContext& context, GSSBuffer& message )
+void GSSContext::unwrap_in_place( const GSSContext& context, GSSBuffer& message, bool * conf_state, gss_qop_t * qop_state )
 {
-	GSSBuffer tmp( unwrap( context, message ) );
+	GSSBuffer tmp( unwrap( context, message, conf_state, qop_state ) );
 	message.swap( tmp );
 }
 

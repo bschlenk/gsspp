@@ -91,10 +91,10 @@ class GSSContext
 	static GSSBuffer wrap    ( const GSSContext& context, const GSSBuffer& message, bool encrypt, gss_qop_t qop = GSS_C_QOP_DEFAULT );
 	static void wrap_in_place( const GSSContext& context,       GSSBuffer& message, bool encrypt, gss_qop_t qop = GSS_C_QOP_DEFAULT );
 
-	GSSBuffer unwrap    ( const GSSBuffer& wrapped ) const;
-	void unwrap_in_place(       GSSBuffer& wrapped ) const;
-	static GSSBuffer unwrap    ( const GSSContext& context, const GSSBuffer& message );
-	static void unwrap_in_place( const GSSContext& context,       GSSBuffer& message );
+	GSSBuffer unwrap    ( const GSSBuffer& wrapped, bool * conf_state = 0, gss_qop_t * qop_state = 0 ) const;
+	void unwrap_in_place(       GSSBuffer& wrapped, bool * conf_state = 0, gss_qop_t * qop_state = 0 ) const;
+	static GSSBuffer unwrap    ( const GSSContext& context, const GSSBuffer& message, bool * conf_state = 0, gss_qop_t * qop_state = 0 );
+	static void unwrap_in_place( const GSSContext& context,       GSSBuffer& message, bool * conf_state = 0, gss_qop_t * qop_state = 0 );
 
 	size_t wrap_size_limit( size_t max_size, bool encrypt, gss_qop_t qop = GSS_C_QOP_DEFAULT ) const;
 
