@@ -1,4 +1,4 @@
-AM_CPPFLAGS = -I/usr/include -I$(top_srcdir)/include
+AM_CPPFLAGS = -I$(top_srcdir)/include
 lib_LTLIBRARIES = libgsspp.la
 libgsspp_la_SOURCES = gssbuffer.cpp gsscontext.cpp gsscredential.cpp gssexception.cpp gssmech.cpp gssname.cpp
 pkginclude_HEADERS = $(top_srcdir)/include/gsspp/gssbuffer.h     \
