@@ -9,7 +9,7 @@ class GSSMech
 {
  public:
 	GSSMech() : _oid( GSS_C_NO_OID ) {}
-	GSSMech( gss_OID_desc_struct * oid ) : _oid( oid ) {}
+	GSSMech( gss_OID oid ) : _oid( oid ) {}
 	GSSMech( const std::string& mech_name );
 
 	operator gss_OID  () { return _oid;   }
