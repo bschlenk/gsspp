@@ -84,7 +84,7 @@ class GSSContext
 	GSSBuffer export_context();
 
 	GSSBuffer get_mic( const GSSBuffer& message, gss_qop_t qop = GSS_C_QOP_DEFAULT ) const;
-	bool verify_mic( const GSSBuffer& message, const GSSBuffer& mic );
+	bool verify_mic( const GSSBuffer& message, const GSSBuffer& mic ) const;
 
 	GSSBuffer wrap    ( const GSSBuffer& message, bool encrypt, gss_qop_t qop = GSS_C_QOP_DEFAULT ) const;
 	void wrap_in_place( GSSBuffer& message,       bool encrypt, gss_qop_t qop = GSS_C_QOP_DEFAULT ) const;
@@ -96,6 +96,7 @@ class GSSContext
 	static GSSBuffer unwrap    ( const GSSContext& context, const GSSBuffer& message );
 	static void unwrap_in_place( const GSSContext& context,       GSSBuffer& message );
 
+	size_t wrap_size_limit( size_t max_size, bool encrypt, gss_qop_t qop = GSS_C_QOP_DEFAULT ) const;
 
  private:
 	gss_ctx_id_t _context;

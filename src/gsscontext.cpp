@@ -115,7 +115,7 @@ GSSBuffer GSSContext::get_mic( const GSSBuffer& message, gss_qop_t qop ) const
 	return mic;
 }
 
-bool GSSContext::verify_mic( const GSSBuffer& message, const GSSBuffer& mic )
+bool GSSContext::verify_mic( const GSSBuffer& message, const GSSBuffer& mic ) const
 {
 	OM_uint32 maj, min;
 	maj = gss_verify_mic( &min, _context, const_cast<GSSBuffer&>( message ), const_cast<GSSBuffer&>( mic ), 0 );
@@ -185,4 +185,15 @@ void GSSContext::unwrap_in_place( const GSSContext& context, GSSBuffer& message 
 {
 	GSSBuffer tmp( unwrap( context, message ) );
 	message.swap( tmp );
+}
+
+size_t GSSContext::wrap_size_limit( size_t max_size, bool encrypt, gss_qop_t qop ) const
+{
+	OM_uint32 maj, min, size_limit;
+	maj = gss_wrap_size_limit( &min, _context, encrypt, qop, max_size, &size_limit );
+
+	if ( maj != GSS_S_COMPLETE )
+		throw GSSException( maj, min, "gss_wrap_size_limit" );
+
+	return size_limit;
 }
