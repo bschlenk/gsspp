@@ -3,7 +3,7 @@
 
 #include <gssapi.h>
 #include <string>
-#include <vector>
+#include <iosfwd>
 
 class GSSMech
 {
@@ -12,6 +12,9 @@ class GSSMech
 	GSSMech( gss_OID oid ) : _oid( oid ) {}
 	GSSMech( const std::string& mech_name );
 
+	size_t size() const { return _oid->length; }
+	std::string str() const;
+
 	operator gss_OID  () { return _oid;   }
 	operator gss_OID *() { return &_oid;  }
 
@@ -19,17 +22,25 @@ class GSSMech
 	gss_OID _oid;
 };
 
+std::ostream& operator<< ( std::ostream& os, const GSSMech& mech );
+
 class GSSMechList
 {
  public:
-	GSSMechList()  { inquire(); }
-	~GSSMechList() { clear();   }
+	GSSMechList();
+	~GSSMechList() { clear(); }
 
-	void     inquire();
-	void     clear();
-	size_t   size() { return _oid_set->count; }
-	gss_OID operator[]( size_t index );
-	gss_OID at( size_t index );
+	void   inquire();
+	void   clear();
+	size_t size()  const { return _oid_set->count; }
+	bool   empty() const { return !size(); }
+
+	void add( const GSSMech& mech );
+	bool contains( const GSSMech& mech ) const;
+	const GSSMech operator[]( size_t index ) const;
+	const GSSMech at( size_t index ) const;
+
+	GSSMechList& operator+= ( const GSSMech& mech );
 
 	operator gss_OID_set  () { return _oid_set;  }
 	operator gss_OID_set *() { return &_oid_set; }
