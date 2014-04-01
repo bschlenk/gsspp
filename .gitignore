@@ -4,10 +4,39 @@
 *.o
 
 # Compiled Dynamic libraries
-*.so
+*.so*
 *.dylib
 
 # Compiled Static libraries
 *.lai
 *.la
 *.a
+
+# Autotools
+*.html
+/autom4te.cache
+/stamp-h1
+Makefile
+/aclocal.m4
+Makefile.in
+/config.*
+/config/
+/configure
+/depcomp
+/install-sh
+/ltmain.sh
+/missing
+*~
+/build*/
+m4
+GIT_REVISION
+SVN_REVISION
+libtool
+.deps
+*.tar*
+*.zip
+*.gcno
+*.gcda
+app.info
+coverage_report
+
