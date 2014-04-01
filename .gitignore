@@ -1,3 +1,7 @@
+# Project Specific
+check_*
+!check_*.cpp
+
 # Compiled Object files
 *.slo
 *.lo
@@ -37,6 +41,7 @@ libtool
 *.zip
 *.gcno
 *.gcda
+.libs
 app.info
 coverage_report
 
