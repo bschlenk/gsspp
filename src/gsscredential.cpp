@@ -16,6 +16,6 @@ GSSCredential::GSSCredential( const GSSName& name )
 
 void GSSCredential::clear()
 {
-	OM_uint32 maj, min;
-	maj = gss_release_cred( &min, &_credential );
+	OM_uint32 min;
+	gss_release_cred( &min, &_credential );
 }

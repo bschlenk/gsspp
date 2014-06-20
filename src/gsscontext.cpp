@@ -18,7 +18,10 @@ void GSSContext::clear()
 	gss_delete_sec_context( &min, &_context, GSS_C_NO_BUFFER );
 }
 
-bool GSSContext::initialize( GSSBuffer& input, const GSSName& target, const Flags& flags, const GSSCredential& cred, GSSMech mech, OM_uint32 time, gss_channel_bindings_t bindings )
+bool GSSContext::initialize(
+	GSSBuffer& input, const GSSName& target, const Flags& flags, 
+	const GSSCredential& cred, GSSMech mech, OM_uint32 time, gss_channel_bindings_t bindings
+)
 {
 	GSSBuffer recv_tok, send_tok;
 	OM_uint32 maj_stat, min_stat, ret_flags;
